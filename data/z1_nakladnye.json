@@ -1,0 +1,79 @@
+[
+ {
+  "nomer": "A1001",
+  "klient": "Альфа-Ойл",
+  "data_otpravki": "05.09.2026 10:00:00",
+  "vagonov": 18,
+  "massa_t": 1062.0
+ },
+ {
+  "nomer": "A1002",
+  "klient": "Альфа-Ойл",
+  "data_otpravki": "12.09.2026 08:30:00",
+  "vagonov": 17,
+  "massa_t": 1003.0
+ },
+ {
+  "nomer": "A1003",
+  "klient": "Альфа-Ойл",
+  "data_otpravki": "03.09.2026 22:15:00",
+  "vagonov": 12,
+  "massa_t": 708.0
+ },
+ {
+  "nomer": "A1004",
+  "klient": "Альфа-Ойл",
+  "data_otpravki": "21.09.2026 14:00:00",
+  "vagonov": 16,
+  "massa_t": 944.0
+ },
+ {
+  "nomer": "A1005",
+  "klient": "Альфа-Ойл",
+  "data_otpravki": "02.10.2026 09:00:00",
+  "vagonov": 14,
+  "massa_t": 826.0
+ },
+ {
+  "nomer": "B2001",
+  "klient": "Бета-Трейд",
+  "data_otpravki": "23.08.2026 11:00:00",
+  "vagonov": 12,
+  "massa_t": 684.0
+ },
+ {
+  "nomer": "B2002",
+  "klient": "Бета-Трейд",
+  "data_otpravki": "27.08.2026 18:40:00",
+  "vagonov": 10,
+  "massa_t": 570.0
+ },
+ {
+  "nomer": "B2003",
+  "klient": "Бета-Трейд",
+  "data_otpravki": "03.10.2026 07:20:00",
+  "vagonov": 9,
+  "massa_t": 513.0
+ },
+ {
+  "nomer": "G3001",
+  "klient": "Гамма-Нефть",
+  "data_otpravki": "10.09.2026 12:00:00",
+  "vagonov": 6,
+  "massa_t": 354.0
+ },
+ {
+  "nomer": "G3002",
+  "klient": "Гамма-Нефть",
+  "data_otpravki": "18.09.2026 12:00:00",
+  "vagonov": 5,
+  "massa_t": 295.0
+ },
+ {
+  "nomer": "X9001",
+  "klient": "",
+  "data_otpravki": "15.09.2026 12:00:00",
+  "vagonov": 3,
+  "massa_t": 177.0
+ }
+]

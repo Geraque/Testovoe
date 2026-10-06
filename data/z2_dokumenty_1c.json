@@ -1,0 +1,108 @@
+[
+ {
+  "id": "d-101",
+  "vid": "peredacha_podryadchiku",
+  "nomer": "ПП-0101",
+  "data": "2026-09-28",
+  "mol": "Петров А.А.",
+  "kontragent_id": "k-1",
+  "stroki": [
+   {
+    "kod": "Н-004",
+    "kol": "10"
+   },
+   {
+    "kod": "Н-001",
+    "kol": "5"
+   }
+  ]
+ },
+ {
+  "id": "d-102",
+  "vid": "peredacha_podryadchiku",
+  "nomer": "ПП-0102",
+  "data": "2026-09-30",
+  "mol": "Кузнецов И.П.",
+  "kontragent_id": "k-4",
+  "stroki": [
+   {
+    "kod": "Н-003",
+    "kol": "15.90"
+   }
+  ]
+ },
+ {
+  "id": "d-103",
+  "vid": "trebovanie",
+  "nomer": "ТН-0055",
+  "data": "2026-09-30",
+  "mol": "Сидорова Е.В.",
+  "kontragent_id": "",
+  "stroki": [
+   {
+    "kod": "Н-002",
+    "kol": "12"
+   },
+   {
+    "kod": "Н-008",
+    "kol": "24"
+   }
+  ]
+ },
+ {
+  "id": "d-104",
+  "vid": "peredacha_podryadchiku",
+  "nomer": "ПП-0104",
+  "data": "2026-10-03",
+  "mol": "Кузнецов И.П.",
+  "kontragent_id": "k-1",
+  "stroki": [
+   {
+    "kod": "Н-007",
+    "kol": "6"
+   }
+  ]
+ },
+ {
+  "id": "d-105",
+  "vid": "peredacha_podryadchiku",
+  "nomer": "ПП-0105",
+  "data": "2026-10-04",
+  "mol": "Кузнецов И.П.",
+  "kontragent_id": "k-2",
+  "stroki": [
+   {
+    "kod": "Н-007",
+    "kol": "6"
+   }
+  ]
+ },
+ {
+  "id": "d-106",
+  "vid": "peredacha_podryadchiku",
+  "nomer": "ПП-0106",
+  "data": "2026-10-02",
+  "mol": "Петров А.А.",
+  "kontragent_id": "k-3",
+  "stroki": [
+   {
+    "kod": "Н-002",
+    "kol": "4"
+   }
+  ]
+ },
+ {
+  "id": "d-107",
+  "vid": "peredacha_podryadchiku",
+  "nomer": "ПП-0107",
+  "data": "2026-10-05",
+  "mol": "Петров А.А.",
+  "kontragent_id": "k-3",
+  "stroki": [
+   {
+    "kod": "Н-002",
+    "kol": "4"
+   }
+  ]
+ }
+]

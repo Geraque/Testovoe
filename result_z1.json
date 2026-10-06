@@ -1,0 +1,94 @@
+{
+  "po_zayavkam": {
+    "0000700188": [
+      {
+        "nakladnaya": "A1003",
+        "vagonov": 12,
+        "massa_t": 708.0,
+        "sverh_zayavki": 0
+      },
+      {
+        "nakladnaya": "A1001",
+        "vagonov": 18,
+        "massa_t": 1062.0,
+        "sverh_zayavki": 0
+      }
+    ],
+    "0000700120": [
+      {
+        "nakladnaya": "A1002",
+        "vagonov": 17,
+        "massa_t": 1003.0,
+        "sverh_zayavki": 0
+      },
+      {
+        "nakladnaya": "A1004",
+        "vagonov": 16,
+        "massa_t": 944.0,
+        "sverh_zayavki": 0
+      },
+      {
+        "nakladnaya": "A1005",
+        "vagonov": 7,
+        "massa_t": 413.0,
+        "sverh_zayavki": 0
+      }
+    ],
+    "0000700310": [
+      {
+        "nakladnaya": "A1005",
+        "vagonov": 7,
+        "massa_t": 413.0,
+        "sverh_zayavki": 0
+      }
+    ],
+    "0000700050": [
+      {
+        "nakladnaya": "B2001",
+        "vagonov": 12,
+        "massa_t": 684.0,
+        "sverh_zayavki": 0
+      },
+      {
+        "nakladnaya": "B2002",
+        "vagonov": 8,
+        "massa_t": 456.0,
+        "sverh_zayavki": 0
+      },
+      {
+        "nakladnaya": "B2002",
+        "vagonov": 2,
+        "massa_t": 114.0,
+        "sverh_zayavki": 2
+      }
+    ],
+    "0000700333": [
+      {
+        "nakladnaya": "B2003",
+        "vagonov": 9,
+        "massa_t": 513.0,
+        "sverh_zayavki": 0
+      }
+    ],
+    "0000700400": [
+      {
+        "nakladnaya": "G3002",
+        "vagonov": 5,
+        "massa_t": 295.0,
+        "sverh_zayavki": 0
+      }
+    ]
+  },
+  "bez_zayavki": {
+    "Гамма-Нефть": [
+      {
+        "nakladnaya": "G3001",
+        "vagonov": 6,
+        "massa_t": 354.0
+      }
+    ]
+  },
+  "bez_klienta": [
+    "X9001"
+  ]
+}

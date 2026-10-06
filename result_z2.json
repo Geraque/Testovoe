@@ -1,0 +1,107 @@
+{
+  "svyazi": {
+    "1": "d-101",
+    "3": "d-103",
+    "6": "d-105"
+  },
+  "ne_najdeno": [
+    2,
+    5,
+    8
+  ],
+  "neodnoznachno": {
+    "4": [
+      "d-106",
+      "d-107"
+    ]
+  },
+  "operativnyj_ostatok": [
+    {
+      "mol": "Кузнецов И.П.",
+      "kod": "Н-003",
+      "operativnyj": 11.41
+    },
+    {
+      "mol": "Кузнецов И.П.",
+      "kod": "Н-006",
+      "operativnyj": 640.0
+    },
+    {
+      "mol": "Кузнецов И.П.",
+      "kod": "Н-007",
+      "operativnyj": 9.0
+    },
+    {
+      "mol": "Петров А.А.",
+      "kod": "Н-001",
+      "operativnyj": 30.0
+    },
+    {
+      "mol": "Петров А.А.",
+      "kod": "Н-002",
+      "operativnyj": 9.0
+    },
+    {
+      "mol": "Петров А.А.",
+      "kod": "Н-004",
+      "operativnyj": 48.0
+    },
+    {
+      "mol": "Сидорова Е.В.",
+      "kod": "Н-002",
+      "operativnyj": 20.0
+    },
+    {
+      "mol": "Сидорова Е.В.",
+      "kod": "Н-005",
+      "operativnyj": 112.5
+    },
+    {
+      "mol": "Сидорова Е.В.",
+      "kod": "Н-008",
+      "operativnyj": 24.0
+    }
+  ],
+  "u_podryadchikov": [
+    {
+      "kontragent_id": "k-1",
+      "kod": "Н-001",
+      "kol": 5.0
+    },
+    {
+      "kontragent_id": "k-1",
+      "kod": "Н-004",
+      "kol": 10.0
+    },
+    {
+      "kontragent_id": "k-1",
+      "kod": "Н-006",
+      "kol": 150.0
+    },
+    {
+      "kontragent_id": "k-1",
+      "kod": "Н-007",
+      "kol": 6.0
+    },
+    {
+      "kontragent_id": "k-2",
+      "kod": "Н-007",
+      "kol": 6.0
+    },
+    {
+      "kontragent_id": "k-3",
+      "kod": "Н-002",
+      "kol": 11.0
+    },
+    {
+      "kontragent_id": "k-4",
+      "kod": "Н-003",
+      "kol": 20.1
+    },
+    {
+      "kontragent_id": "k-4",
+      "kod": "Н-007",
+      "kol": 1.0
+    }
+  ]
+}

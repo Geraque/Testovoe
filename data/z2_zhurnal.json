@@ -1,0 +1,123 @@
+[
+ {
+  "id": 1,
+  "tip": "vydacha_podryadchiku",
+  "data": "2026-09-22",
+  "mol": "Петров А.А.",
+  "kontragent_id": "k-1",
+  "stroki": [
+   {
+    "kod": "Н-001",
+    "kol": "5"
+   },
+   {
+    "kod": "Н-004",
+    "kol": "10"
+   }
+  ],
+  "status": "vydano"
+ },
+ {
+  "id": 2,
+  "tip": "vydacha_podryadchiku",
+  "data": "2026-09-10",
+  "mol": "Кузнецов И.П.",
+  "kontragent_id": "k-4",
+  "stroki": [
+   {
+    "kod": "Н-003",
+    "kol": "15,9"
+   }
+  ],
+  "status": "vydano"
+ },
+ {
+  "id": 3,
+  "tip": "vydacha_svoim",
+  "data": "2026-09-29",
+  "mol": "Сидорова Е.В.",
+  "komu": "Иванов И.О.",
+  "stroki": [
+   {
+    "kod": "Н-002",
+    "kol": "12"
+   },
+   {
+    "kod": "Н-008",
+    "kol": "24"
+   }
+  ],
+  "status": "vydano"
+ },
+ {
+  "id": 4,
+  "tip": "vydacha_podryadchiku",
+  "data": "2026-10-01",
+  "mol": "Петров А.А.",
+  "kontragent_id": "k-3",
+  "stroki": [
+   {
+    "kod": "Н-002",
+    "kol": "4"
+   }
+  ],
+  "status": "vydano"
+ },
+ {
+  "id": 5,
+  "tip": "vozvrat",
+  "data": "2026-10-02",
+  "mol": "Петров А.А.",
+  "kontragent_id": "k-3",
+  "iskhodnaya_id": 4,
+  "stroki": [
+   {
+    "kod": "Н-002",
+    "kol": "1"
+   }
+  ],
+  "status": "vydano"
+ },
+ {
+  "id": 6,
+  "tip": "vydacha_podryadchiku",
+  "data": "2026-10-02",
+  "mol": "Кузнецов И.П.",
+  "kontragent_id": "k-2",
+  "stroki": [
+   {
+    "kod": "Н-007",
+    "kol": "6"
+   }
+  ],
+  "status": "vydano"
+ },
+ {
+  "id": 7,
+  "tip": "vydacha_podryadchiku",
+  "data": "2026-10-03",
+  "mol": "Кузнецов И.П.",
+  "kontragent_id": "k-2",
+  "stroki": [
+   {
+    "kod": "Н-007",
+    "kol": "2"
+   }
+  ],
+  "status": "otmeneno"
+ },
+ {
+  "id": 8,
+  "tip": "vydacha_podryadchiku",
+  "data": "2026-03-31",
+  "mol": "Кузнецов И.П.",
+  "kontragent_id": "k-4",
+  "stroki": [
+   {
+    "kod": "Н-007",
+    "kol": "1"
+   }
+  ],
+  "status": "vydano"
+ }
+]
