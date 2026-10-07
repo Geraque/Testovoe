@@ -21,6 +21,31 @@ def invoice(number="n", client="client", count=1, mass="10", sent="10.09.2026 10
 
 
 class AllocationTests(unittest.TestCase):
+    def test_period_accepts_dates_and_datetimes_as_inclusive_days(self):
+        for start in ("01.09.2026", "01.09.2026 12:30:00"):
+            for end in ("30.09.2026", "30.09.2026 00:00:00"):
+                with self.subTest(start=start, end=end):
+                    result = allocate_invoices(
+                        [application(capacity=0, start=start, end=end)],
+                        [invoice("first", sent="01.09.2026 00:00:00"),
+                         invoice("last", sent="30.09.2026 23:59:59")],
+                    )
+                    self.assertEqual(result, allocate_invoices(
+                        [application(capacity=0)],
+                        [invoice("first", sent="01.09.2026 00:00:00"),
+                         invoice("last", sent="30.09.2026 23:59:59")],
+                    ))
+                    self.assertEqual(len(result["po_zayavkam"]["a"]), 2)
+
+    def test_invalid_period_date_or_time_is_rejected(self):
+        for field in ("nachalo", "konec"):
+            for value in ("31.02.2026", "01.09.2026 25:00:00", "01.09.2026 garbage"):
+                with self.subTest(field=field, value=value):
+                    row = application()
+                    row[field] = value
+                    with self.assertRaisesRegex(ValueError, "Некорректная дата периода заявки"):
+                        allocate_invoices([row], [])
+
     def test_rule1_withdrawn_applications_are_excluded(self):
         for state in ("Отозвана", "Отозвана до обработки", "Отозвана после согласования"):
             with self.subTest(state=state):

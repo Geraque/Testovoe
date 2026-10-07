@@ -17,8 +17,8 @@ class Application:
 
     @classmethod
     def from_row(cls, row: dict) -> "Application":
-        start = datetime.strptime(row["nachalo"], "%d.%m.%Y").date()
-        end = datetime.strptime(row["konec"], "%d.%m.%Y").date()
+        start = parse_period_date(row["nachalo"])
+        end = parse_period_date(row["konec"])
         if end < start:
             raise ValueError(f"Обратный период заявки {row['nomer']}")
         if not row["klient"]:
@@ -106,3 +106,12 @@ def allocate_invoices(applications: list[dict], invoices: list[dict]) -> dict:
         "bez_zayavki": dict(without_application),
         "bez_klienta": without_client,
     }
+
+
+def parse_period_date(value: str) -> date:
+    for date_format in ("%d.%m.%Y", "%d.%m.%Y %H:%M:%S"):
+        try:
+            return datetime.strptime(value, date_format).date()
+        except ValueError:
+            continue
+    raise ValueError(f"Некорректная дата периода заявки: {value!r}")
