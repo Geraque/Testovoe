@@ -73,13 +73,13 @@ def allocate_invoices(applications: list[dict], invoices: list[dict]) -> dict:
             continue
 
         queue = queues.get(client, [])
-        parts = []
+        parts = {}
         for application in queue:
             if remaining == 0 or application.start > sent.date():
                 break
             count = min(remaining, application.remaining)
             if count:
-                parts.append((application.number, count, False))
+                parts[application.number] = (count, 0)
                 application.remaining -= count
                 remaining -= count
         if remaining:
@@ -87,10 +87,12 @@ def allocate_invoices(applications: list[dict], invoices: list[dict]) -> dict:
                 (item for item in reversed(queue) if item.start <= sent.date() <= item.end),
                 None,
             )
-            parts.append((overflow.number if overflow else None, remaining, True))
+            number = overflow.number if overflow else None
+            count, _ = parts.get(number, (0, 0))
+            parts[number] = (count + remaining, remaining if overflow else 0)
 
-        masses = split_mass(mass, [count for _, count, _ in parts])
-        for (number, count, is_overflow), part_mass in zip(parts, masses):
+        masses = split_mass(mass, [count for count, _ in parts.values()])
+        for (number, (count, overflow_count)), part_mass in zip(parts.items(), masses):
             entry = {
                 "nakladnaya": invoice["nomer"], "vagonov": count,
                 "massa_t": float(part_mass),
@@ -98,7 +100,7 @@ def allocate_invoices(applications: list[dict], invoices: list[dict]) -> dict:
             if number is None:
                 without_application[client].append(entry)
             else:
-                entry["sverh_zayavki"] = count if is_overflow else 0
+                entry["sverh_zayavki"] = overflow_count
                 by_application[number].append(entry)
 
     return {

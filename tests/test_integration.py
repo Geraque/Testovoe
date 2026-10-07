@@ -25,8 +25,7 @@ EXPECTED_Z1 = {
         ],
         "0000700050": [
             {"nakladnaya": "B2001", "vagonov": 12, "massa_t": 684.0, "sverh_zayavki": 0},
-            {"nakladnaya": "B2002", "vagonov": 8, "massa_t": 456.0, "sverh_zayavki": 0},
-            {"nakladnaya": "B2002", "vagonov": 2, "massa_t": 114.0, "sverh_zayavki": 2},
+            {"nakladnaya": "B2002", "vagonov": 10, "massa_t": 570.0, "sverh_zayavki": 2},
         ],
         "0000700333": [
             {"nakladnaya": "B2003", "vagonov": 9, "massa_t": 513.0, "sverh_zayavki": 0},

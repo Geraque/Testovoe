@@ -123,13 +123,33 @@ class AllocationTests(unittest.TestCase):
         self.assertEqual(result["po_zayavkam"]["b"][0]["sverh_zayavki"], 2)
         self.assertTrue(all(not result["po_zayavkam"][key] for key in ("a", "expired", "future")))
 
-    def test_rule7_regular_and_overflow_parts_are_separate(self):
+    def test_rule7_regular_and_overflow_parts_are_combined(self):
         result = allocate_invoices([application(capacity=1)], [invoice(count=3, mass="30")])
         self.assertEqual(
             [(row["vagonov"], row["sverh_zayavki"], row["massa_t"])
              for row in result["po_zayavkam"]["a"]],
-            [(1, 0, 10.0), (2, 2, 20.0)],
+            [(3, 2, 30.0)],
         )
+
+    def test_mass_is_rounded_after_combining_parts_by_application(self):
+        result = allocate_invoices(
+            [application("a", capacity=1), application("b", capacity=1)],
+            [invoice(count=3, mass="0.1")],
+        )
+        self.assertEqual(result["po_zayavkam"], {
+            "a": [{"nakladnaya": "n", "vagonov": 1, "massa_t": 0.0, "sverh_zayavki": 0}],
+            "b": [{"nakladnaya": "n", "vagonov": 2, "massa_t": 0.1, "sverh_zayavki": 1}],
+        })
+
+    def test_overflow_combines_with_earlier_application(self):
+        result = allocate_invoices([
+            application("a", capacity=1),
+            application("b", capacity=1, start="02.09.2026", end="09.09.2026"),
+        ], [invoice(count=3, mass="30")])
+        self.assertEqual(result["po_zayavkam"], {
+            "a": [{"nakladnaya": "n", "vagonov": 2, "massa_t": 20.0, "sverh_zayavki": 1}],
+            "b": [{"nakladnaya": "n", "vagonov": 1, "massa_t": 10.0, "sverh_zayavki": 0}],
+        })
 
     def test_rule7_period_boundaries_include_whole_day(self):
         for sent in ("01.09.2026 00:00:00", "30.09.2026 23:59:59"):

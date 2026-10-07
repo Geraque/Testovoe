@@ -51,14 +51,8 @@
       },
       {
         "nakladnaya": "B2002",
-        "vagonov": 8,
-        "massa_t": 456.0,
-        "sverh_zayavki": 0
-      },
-      {
-        "nakladnaya": "B2002",
-        "vagonov": 2,
-        "massa_t": 114.0,
+        "vagonov": 10,
+        "massa_t": 570.0,
         "sverh_zayavki": 2
       }
     ],
