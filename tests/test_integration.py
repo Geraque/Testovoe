@@ -69,6 +69,27 @@ EXPECTED_Z2 = {
 
 
 class IntegrationTests(unittest.TestCase):
+    def test_cli_null_application_state_reports_error_without_traceback(self):
+        with tempfile.TemporaryDirectory() as directory:
+            data = Path(directory)
+            for path in (ROOT / "data").iterdir():
+                if path.is_file():
+                    (data / path.name).write_bytes(path.read_bytes())
+            path = data / "z1_zayavki.json"
+            zayavki = json.loads(path.read_text(encoding="utf-8"))
+            zayavki[0]["sostoyanie"] = None
+            path.write_text(json.dumps(zayavki, ensure_ascii=False), encoding="utf-8")
+            output = data / "output"
+            completed = subprocess.run([
+                sys.executable, "-X", "utf8", str(ROOT / "main.py"),
+                "--data-dir", str(data), "--output-dir", str(output),
+            ], capture_output=True, text=True, encoding="utf-8")
+            self.assertEqual(completed.returncode, 1)
+            self.assertIn("Ошибка обработки данных:", completed.stderr)
+            self.assertIn(f"Состояние заявки {zayavki[0]['nomer']} должно быть строкой", completed.stderr)
+            self.assertNotIn("Traceback", completed.stderr)
+            self.assertFalse(output.exists())
+
     def test_cli_with_supplied_data_from_another_working_directory(self):
         with tempfile.TemporaryDirectory() as directory:
             output = Path(directory) / "результаты"

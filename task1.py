@@ -49,7 +49,10 @@ def allocate_nakladnye(zayavki: list[dict], nakladnye: list[dict]) -> dict:
     require_unique(nakladnye, "nomer")
     queues = defaultdict(list)
     for row in zayavki:
-        if not row["sostoyanie"].startswith("Отозвана"):
+        sostoyanie = row["sostoyanie"]
+        if not isinstance(sostoyanie, str):
+            raise ValueError(f"Состояние заявки {row['nomer']} должно быть строкой: {sostoyanie!r}")
+        if not sostoyanie.startswith("Отозвана"):
             zayavka = Zayavka.from_row(row)
             queues[zayavka.klient].append(zayavka)
     for queue in queues.values():

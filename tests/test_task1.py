@@ -21,6 +21,12 @@ def nakladnaya(nomer="n", klient="client", vagonov=1, massa_t="10", data_otpravk
 
 
 class AllocationTests(unittest.TestCase):
+    def test_non_string_application_state_is_rejected(self):
+        for sostoyanie in (None, 1, True, [], {}):
+            with self.subTest(sostoyanie=sostoyanie):
+                with self.assertRaisesRegex(ValueError, "Состояние заявки a должно быть строкой"):
+                    allocate_nakladnye([zayavka(sostoyanie=sostoyanie)], [])
+
     def test_queue_progress_is_independent_and_keeps_future_application(self):
         result = allocate_nakladnye([
             zayavka("zero", vagonov=0),
