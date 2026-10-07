@@ -7,33 +7,33 @@ from common import decimal_number, require_unique, wagon_count
 
 
 @dataclass
-class Application:
-    number: str
-    client: str
-    start: date
-    end: date
-    received: datetime
-    remaining: int
+class Zayavka:
+    nomer: str
+    klient: str
+    nachalo: date
+    konec: date
+    postupila: datetime
+    available_wagons: int
 
     @classmethod
-    def from_row(cls, row: dict) -> "Application":
-        start = parse_period_date(row["nachalo"])
-        end = parse_period_date(row["konec"])
-        if end < start:
+    def from_row(cls, row: dict) -> "Zayavka":
+        nachalo = parse_period_date(row["nachalo"])
+        konec = parse_period_date(row["konec"])
+        if konec < nachalo:
             raise ValueError(f"Обратный период заявки {row['nomer']}")
         if not row["klient"]:
             raise ValueError(f"Нет клиента у заявки {row['nomer']}")
         return cls(
-            row["nomer"], row["klient"], start, end,
+            row["nomer"], row["klient"], nachalo, konec,
             datetime.strptime(row["postupila"], "%d.%m.%Y %H:%M:%S"),
             wagon_count(row["vagonov"], allow_zero=True),
         )
 
 
-def split_mass(mass: Decimal, wagons: list[int]) -> list[Decimal]:
-    if mass < 0:
+def split_mass(massa_t: Decimal, wagons: list[int]) -> list[Decimal]:
+    if massa_t < 0:
         raise ValueError("Масса не может быть отрицательной")
-    units = int((mass * 10).quantize(Decimal("1"), rounding=ROUND_HALF_UP))
+    units = int((massa_t * 10).quantize(Decimal("1"), rounding=ROUND_HALF_UP))
     total = sum(wagons)
     shares = [divmod(units * count, total) for count in wagons]
     allocated = [whole for whole, _ in shares]
@@ -44,69 +44,69 @@ def split_mass(mass: Decimal, wagons: list[int]) -> list[Decimal]:
     return [Decimal(value) / 10 for value in allocated]
 
 
-def allocate_invoices(applications: list[dict], invoices: list[dict]) -> dict:
-    require_unique(applications, "nomer")
-    require_unique(invoices, "nomer")
+def allocate_nakladnye(zayavki: list[dict], nakladnye: list[dict]) -> dict:
+    require_unique(zayavki, "nomer")
+    require_unique(nakladnye, "nomer")
     queues = defaultdict(list)
-    for row in applications:
+    for row in zayavki:
         if not row["sostoyanie"].startswith("Отозвана"):
-            application = Application.from_row(row)
-            queues[application.client].append(application)
+            zayavka = Zayavka.from_row(row)
+            queues[zayavka.klient].append(zayavka)
     for queue in queues.values():
-        queue.sort(key=lambda item: (item.start, item.received))
+        queue.sort(key=lambda item: (item.nachalo, item.postupila))
 
-    by_application = {item.number: [] for queue in queues.values() for item in queue}
-    without_application = defaultdict(list)
-    without_client = []
-    dated_invoices = [
+    po_zayavkam = {item.nomer: [] for queue in queues.values() for item in queue}
+    bez_zayavki = defaultdict(list)
+    bez_klienta = []
+    dated_nakladnye = [
         (datetime.strptime(row["data_otpravki"], "%d.%m.%Y %H:%M:%S"), row)
-        for row in invoices
+        for row in nakladnye
     ]
-    for sent, invoice in sorted(dated_invoices, key=lambda item: item[0]):
-        remaining = wagon_count(invoice["vagonov"])
-        mass = decimal_number(invoice["massa_t"])
-        if mass < 0:
-            raise ValueError(f"Отрицательная масса накладной {invoice['nomer']}")
-        client = invoice.get("klient")
-        if not client:
-            without_client.append(invoice["nomer"])
+    for data_otpravki, nakladnaya in sorted(dated_nakladnye, key=lambda item: item[0]):
+        unallocated_wagons = wagon_count(nakladnaya["vagonov"])
+        massa_t = decimal_number(nakladnaya["massa_t"])
+        if massa_t < 0:
+            raise ValueError(f"Отрицательная масса накладной {nakladnaya['nomer']}")
+        klient = nakladnaya.get("klient")
+        if not klient:
+            bez_klienta.append(nakladnaya["nomer"])
             continue
 
-        queue = queues.get(client, [])
+        queue = queues.get(klient, [])
         parts = {}
-        for application in queue:
-            if remaining == 0 or application.start > sent.date():
+        for zayavka in queue:
+            if unallocated_wagons == 0 or zayavka.nachalo > data_otpravki.date():
                 break
-            count = min(remaining, application.remaining)
+            count = min(unallocated_wagons, zayavka.available_wagons)
             if count:
-                parts[application.number] = (count, 0)
-                application.remaining -= count
-                remaining -= count
-        if remaining:
+                parts[zayavka.nomer] = (count, 0)
+                zayavka.available_wagons -= count
+                unallocated_wagons -= count
+        if unallocated_wagons:
             overflow = next(
-                (item for item in reversed(queue) if item.start <= sent.date() <= item.end),
+                (item for item in reversed(queue) if item.nachalo <= data_otpravki.date() <= item.konec),
                 None,
             )
-            number = overflow.number if overflow else None
-            count, _ = parts.get(number, (0, 0))
-            parts[number] = (count + remaining, remaining if overflow else 0)
+            nomer = overflow.nomer if overflow else None
+            count, _ = parts.get(nomer, (0, 0))
+            parts[nomer] = (count + unallocated_wagons, unallocated_wagons if overflow else 0)
 
-        masses = split_mass(mass, [count for count, _ in parts.values()])
-        for (number, (count, overflow_count)), part_mass in zip(parts.items(), masses):
+        masses = split_mass(massa_t, [count for count, _ in parts.values()])
+        for (nomer, (count, sverh_zayavki)), part_mass in zip(parts.items(), masses):
             entry = {
-                "nakladnaya": invoice["nomer"], "vagonov": count,
+                "nakladnaya": nakladnaya["nomer"], "vagonov": count,
                 "massa_t": float(part_mass),
             }
-            if number is None:
-                without_application[client].append(entry)
+            if nomer is None:
+                bez_zayavki[klient].append(entry)
             else:
-                entry["sverh_zayavki"] = overflow_count
-                by_application[number].append(entry)
+                entry["sverh_zayavki"] = sverh_zayavki
+                po_zayavkam[nomer].append(entry)
 
     return {
-        "po_zayavkam": by_application,
-        "bez_zayavki": dict(without_application),
-        "bez_klienta": without_client,
+        "po_zayavkam": po_zayavkam,
+        "bez_zayavki": dict(bez_zayavki),
+        "bez_klienta": bez_klienta,
     }
 
 

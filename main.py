@@ -4,7 +4,7 @@ import json
 from decimal import Decimal
 from pathlib import Path
 
-from task1 import allocate_invoices
+from task1 import allocate_nakladnye
 from task2 import reconcile_stock
 
 
@@ -22,16 +22,16 @@ def main() -> None:
     parser.add_argument("--output-dir", type=Path, default=BASE_DIR)
     args = parser.parse_args()
     try:
-        result1 = allocate_invoices(
+        result1 = allocate_nakladnye(
             read_json(args.data_dir / "z1_zayavki.json"),
             read_json(args.data_dir / "z1_nakladnye.json"),
         )
         with (args.data_dir / "z2_ostatki_1c.csv").open(encoding="utf-8-sig", newline="") as source:
-            balances = list(csv.DictReader(source, delimiter=";"))
+            ostatki_1c = list(csv.DictReader(source, delimiter=";"))
         result2 = reconcile_stock(
             read_json(args.data_dir / "z2_zhurnal.json"),
             read_json(args.data_dir / "z2_dokumenty_1c.json"),
-            balances,
+            ostatki_1c,
         )
         args.output_dir.mkdir(parents=True, exist_ok=True)
         for filename, result in (("result_z1.json", result1), ("result_z2.json", result2)):
