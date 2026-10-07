@@ -206,11 +206,11 @@ class AllocationTests(unittest.TestCase):
         self.assertEqual(split_mass(Decimal("1.25"), [1]), [Decimal("1.3")])
 
     def test_mass_and_wagons_conserved_for_many_small_allocations(self):
-        for vagonov in range(5):
-            for vagonov in range(1, 12):
-                for massa_t in ("0", "0.1", "1", "100.7"):
+        for vagonov in range(1, 12):
+            for massa_t in ("0", "0.1", "1", "100.7"):
+                with self.subTest(vagonov=vagonov, massa_t=massa_t):
                     result = allocate_nakladnye(
-                        [zayavka("a", vagonov=vagonov), zayavka("b", vagonov=vagonov)],
+                        [zayavka("a", vagonov=2), zayavka("b", vagonov=3)],
                         [nakladnaya(vagonov=vagonov, massa_t=massa_t)],
                     )
                     rows = [row for group in result["po_zayavkam"].values() for row in group]
