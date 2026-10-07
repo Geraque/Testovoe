@@ -21,6 +21,28 @@ def nakladnaya(nomer="n", klient="client", vagonov=1, massa_t="10", data_otpravk
 
 
 class AllocationTests(unittest.TestCase):
+    def test_queue_progress_is_independent_and_keeps_future_application(self):
+        result = allocate_nakladnye([
+            zayavka("zero", vagonov=0),
+            zayavka("a", vagonov=2),
+            zayavka("future", vagonov=2, nachalo="11.09.2026"),
+            zayavka("b", klient="other", vagonov=2),
+        ], [
+            nakladnaya("n1", vagonov=1, data_otpravki="09.09.2026 10:00:00"),
+            nakladnaya("other1", klient="other", data_otpravki="10.09.2026 09:00:00"),
+            nakladnaya("n2", vagonov=2, data_otpravki="10.09.2026 10:00:00"),
+            nakladnaya("n3", vagonov=1, data_otpravki="11.09.2026 10:00:00"),
+            nakladnaya("other2", klient="other", data_otpravki="12.09.2026 10:00:00"),
+        ])
+        self.assertEqual(result["po_zayavkam"]["zero"], [])
+        self.assertEqual(
+            [(row["nakladnaya"], row["vagonov"], row["sverh_zayavki"])
+             for row in result["po_zayavkam"]["a"]],
+            [("n1", 1, 0), ("n2", 2, 1)],
+        )
+        self.assertEqual(result["po_zayavkam"]["future"][0]["nakladnaya"], "n3")
+        self.assertEqual([row["sverh_zayavki"] for row in result["po_zayavkam"]["b"]], [0, 0])
+
     def test_period_accepts_dates_and_datetimes_as_inclusive_days(self):
         for nachalo in ("01.09.2026", "01.09.2026 12:30:00"):
             for konec in ("30.09.2026", "30.09.2026 00:00:00"):

@@ -1,3 +1,4 @@
+from bisect import bisect_left, bisect_right
 from collections import defaultdict
 from datetime import date, timedelta
 from decimal import Decimal
@@ -39,6 +40,8 @@ def reconcile_stock(zhurnal: list[dict], dokumenty: list[dict], ostatki_1c: list
         if vid in DOCUMENT_KINDS.values():
             key = match_key(vid, dokument, quantities(dokument["stroki"]))
             dokument_index[key].append((date.fromisoformat(dokument["data"]), dokument["id"]))
+    for group in dokument_index.values():
+        group.sort()
 
     operativnyj_ostatok = defaultdict(Decimal)
     u_podryadchikov = defaultdict(Decimal)
@@ -66,10 +69,12 @@ def reconcile_stock(zhurnal: list[dict], dokumenty: list[dict], ostatki_1c: list
         candidates = []
         if tip in DOCUMENT_KINDS:
             key = match_key(DOCUMENT_KINDS[tip], row, kol_by_kod)
+            group = dokument_index.get(key, [])
+            left = bisect_left(group, recorded - timedelta(days=2), key=lambda item: item[0])
+            right = bisect_right(group, recorded + timedelta(days=14), key=lambda item: item[0])
             candidates = sorted(
-                identifier for documented, identifier in dokument_index.get(key, [])
-                if recorded - timedelta(days=2) <= documented <= recorded + timedelta(days=14)
-                and identifier not in used_dokumenty
+                identifier for _, identifier in group[left:right]
+                if identifier not in used_dokumenty
             )
         if len(candidates) == 1:
             svyazi[str(row["id"])] = candidates[0]

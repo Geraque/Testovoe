@@ -54,6 +54,7 @@ def allocate_nakladnye(zayavki: list[dict], nakladnye: list[dict]) -> dict:
             queues[zayavka.klient].append(zayavka)
     for queue in queues.values():
         queue.sort(key=lambda item: (item.nachalo, item.postupila))
+    next_positions = defaultdict(int)
 
     po_zayavkam = {item.nomer: [] for queue in queues.values() for item in queue}
     bez_zayavki = defaultdict(list)
@@ -74,14 +75,20 @@ def allocate_nakladnye(zayavki: list[dict], nakladnye: list[dict]) -> dict:
 
         queue = queues.get(klient, [])
         parts = {}
-        for zayavka in queue:
-            if unallocated_wagons == 0 or zayavka.nachalo > data_otpravki.date():
+        position = next_positions[klient]
+        while unallocated_wagons and position < len(queue):
+            zayavka = queue[position]
+            if zayavka.available_wagons == 0:
+                position += 1
+                continue
+            if zayavka.nachalo > data_otpravki.date():
                 break
             count = min(unallocated_wagons, zayavka.available_wagons)
             if count:
                 parts[zayavka.nomer] = (count, 0)
                 zayavka.available_wagons -= count
                 unallocated_wagons -= count
+        next_positions[klient] = position
         if unallocated_wagons:
             overflow = next(
                 (item for item in reversed(queue) if item.nachalo <= data_otpravki.date() <= item.konec),

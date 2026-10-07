@@ -35,6 +35,21 @@ def get_u_podryadchikov(result):
 
 
 class ReconciliationTests(unittest.TestCase):
+    def test_all_documents_on_date_boundaries_are_included(self):
+        dokumenty = [
+            dokument("late", recorded="2026-09-25"),
+            dokument("upper2", recorded="2026-09-24"),
+            dokument("lower2", recorded="2026-09-08"),
+            dokument("early", recorded="2026-09-07"),
+            dokument("upper1", recorded="2026-09-24"),
+            dokument("lower1", recorded="2026-09-08"),
+        ]
+        result = reconcile_stock([zapis()], dokumenty, [])
+        self.assertEqual(result["neodnoznachno"], {
+            "1": ["lower1", "lower2", "upper1", "upper2"],
+        })
+        self.assertEqual(result["svyazi"], {})
+
     def test_supported_kind_pairs(self):
         for journal_kind, document_kind in (
             ("vydacha_podryadchiku", "peredacha_podryadchiku"),
